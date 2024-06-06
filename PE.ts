@@ -5,14 +5,22 @@ import { u16 } from "./u16";
 import { OptionalHeader } from "./OptionalHeader";
 import { OptionalHeaderDataDirectories } from "./OptionalHeaderDataDirectories";
 import { SectionTable } from "./SectionTable";
-import { decodeInstruction } from ".";
+import { decodeInstruction } from "./instructionMap";
+import { u8 } from "./u8";
+import { ECharacteristics } from "./Characteristics";
 
-export class PEHeaderManager {
+export class PE {
   private readonly peHeader: PEHeader;
   private readonly optionalHeader: OptionalHeader;
   private readonly optionalHeaderDataDirectories: OptionalHeaderDataDirectories;
   private readonly sectionTables: SectionTable[];
   private readonly sections: { [key: string]: Uint8Array };
+  private wordSize = -1;
+  private instructionPointer = 0;
+  private lastInstructionPointer: number | null = null;
+  private instruction: number | null = null;
+  private lastInstruction: number | null = null;
+  private address: number | null = null;
 
   constructor(
     peHeader: PEHeader,
@@ -29,6 +37,10 @@ export class PEHeaderManager {
   }
 
   public async run() {
+    if (this.wordSize === -1) {
+      throw new Error("Word size not set");
+    }
+
     const codeSection = this.sections[".text"];
 
     if (!codeSection) {
@@ -38,9 +50,36 @@ export class PEHeaderManager {
     let instructionPointer = 0;
 
     while (instructionPointer < codeSection.length) {
-      const instruction = u32(codeSection, instructionPointer);
+      const instruction = u8(codeSection, instructionPointer);
+      instructionPointer++;
+
+      console.log(
+        `0x${instructionPointer.toString(16)}: 0x${Math.abs(
+          instruction
+        ).toString(16)}`
+      );
+
+      const instructionString = decodeInstruction(instruction);
+
+      if (instructionPointer === this.lastInstructionPointer) {
+        console.log(
+          `Infinite loop detected at 0x${instructionPointer.toString(16)}`
+        );
+        break;
+      }
+
+      if (instructionString.includes(",")) {
+        const [instructionName, operand] = instructionString.split(",");
+        console.log(instructionName, operand);
+
+        if (operand.includes("m32")) {
+          const address = u32(codeSection, instructionPointer);
+          console.log(`Address: 0x${address.toString(16)}`);
+          instructionPointer += 4;
+        }
+      }
+
       console.log(decodeInstruction(instruction));
-      instructionPointer += 4;
     }
   }
 
@@ -51,6 +90,7 @@ export class PEHeaderManager {
     const bytesRead = await fd.read(data, 0, fileSize, 0);
     const pointerToPEHeaderStart = u32(data, 60);
     const peHeader = new PEHeader(data, pointerToPEHeaderStart);
+
     const optionalHeaderMagic = u16(
       data,
       pointerToPEHeaderStart + peHeader.size
@@ -82,13 +122,21 @@ export class PEHeaderManager {
       );
       sections[sectionName] = sectionData;
     }
-    return new PEHeaderManager(
+    const self = new PE(
       peHeader,
       optionalHeader,
       optionalHeaderDataDirectories,
       sectionTables,
       sections
     );
+
+    if (!peHeader.characteristics.has(ECharacteristics.MACHINE_IS_32_BIT)) {
+      throw new Error("Only 32-bit PE files are supported");
+    }
+
+    self.wordSize = 32;
+
+    return self;
   }
 
   public toString() {

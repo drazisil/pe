@@ -2,7 +2,7 @@ import { u16 } from "./u16";
 import { u32 } from "./u32";
 import { time_t } from "./time_t";
 import { machine } from "./machine";
-import { characteristics } from "./characteristics";
+import { Characteristics } from "./Characteristics";
 import { char } from "./char";
 
 export class PEHeader {
@@ -14,7 +14,7 @@ export class PEHeader {
     this.pointerToSymbolTable = u32(data, offset + 12);
     this.numberOfSymbols = u32(data, offset + 16);
     this.sizeOfOptionalHeader = u16(data, offset + 20);
-    this.characteristics = characteristics(u16(data, offset + 22));
+    this.characteristics = new Characteristics(u16(data, offset + 22));
   }
 
   get size() {
@@ -28,7 +28,7 @@ export class PEHeader {
   pointerToSymbolTable: number;
   numberOfSymbols: number;
   sizeOfOptionalHeader: number;
-  characteristics: string;
+  characteristics: Characteristics;
 
   toString() {
     return `PE Header:
