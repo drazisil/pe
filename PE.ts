@@ -5,11 +5,8 @@ import { u16 } from "./u16";
 import { OptionalHeader } from "./OptionalHeader";
 import { OptionalHeaderDataDirectories } from "./OptionalHeaderDataDirectories";
 import { SectionTable } from "./SectionTable";
-import {
-  decodeInstruction,
-  decodeModRM_32,
-  isOpcodeWithModRM,
-} from "./instructionMap";
+import { decodeInstruction } from "./instructionMap";
+import { decodeModRM_32, isOpcodeWithModRM } from "./registerNumberMap";
 import { u8 } from "./u8";
 import { ECharacteristics } from "./Characteristics";
 
