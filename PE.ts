@@ -17,11 +17,11 @@ export class PE {
   private readonly sectionTables: SectionTable[];
   private readonly sections: { [key: string]: Uint8Array };
   private wordSize = -1;
-  private instructionPointer = 0;
-  private lastInstructionPointer: number | null = null;
-  private instruction: number | null = null;
-  private lastInstruction: number | null = null;
-  private address: number | null = null;
+  private instructionPointer = -1;
+  private lastInstructionPointer = 0; 
+  private instruction = -1;
+  private lastInstruction = -1;
+  private address = -1;
 
   constructor(
     peHeader: PEHeader,
@@ -37,6 +37,28 @@ export class PE {
     this.sections = sections;
   }
 
+  /**
+   * Fetches the next instruction from the code section.
+   * If the end of the code section is reached, an error is thrown.
+   */
+  fetchInstruction() {
+    if (this.instructionPointer >= this.sections[".text"].length) {
+      throw new Error("End of code section reached");
+    }
+
+    this.lastInstructionPointer = this.instructionPointer;
+    this.instruction = this.sections[".text"][this.instructionPointer];
+    this.instructionPointer++;
+
+    console.log(`Instruction: 0x${this.instruction.toString(16)}`);
+  }
+
+  /**
+   * Executes the program by running the instructions in the code section.
+   * Throws an error if the word size is not set or if the code section is not found.
+   * Prints the instruction pointer and the decoded instruction for each executed instruction.
+   * Stops execution if an infinite loop is detected.
+   */
   public async run() {
     if (this.wordSize === -1) {
       throw new Error("Word size not set");
@@ -48,36 +70,38 @@ export class PE {
       throw new Error("Code section not found");
     }
 
-    let instructionPointer = 0;
+    this.instructionPointer = 0;
 
-    while (instructionPointer < codeSection.length) {
-      const instruction = u8(codeSection, instructionPointer);
-      instructionPointer++;
+    while (true) {
+
+      this.fetchInstruction();
+
+      let instruction = this.instruction;
 
       console.log(
-        `0x${instructionPointer.toString(16)}: 0x${Math.abs(
+        `0x${this.instructionPointer.toString(16)}: 0x${Math.abs(
           instruction
         ).toString(16)}`
       );
 
-      const instructionString = decodeInstruction(instruction);
+      const instructionString = decodeInstruction(this.instruction);
 
-      if (instructionPointer === this.lastInstructionPointer) {
+      if (this.instructionPointer === this.lastInstructionPointer) {
         console.log(
-          `Infinite loop detected at 0x${instructionPointer.toString(16)}`
+          `Infinite loop detected at 0x${this.instructionPointer.toString(16)}`
         );
         break;
       }
 
-      if (isOpcodeWithModRM(instruction)) {
-        const modRM = u8(codeSection, instructionPointer);
-        instructionPointer++;
+      if (isOpcodeWithModRM(this.instruction)) {
+        this.fetchInstruction()
+        const modRM = this.instruction;
         console.log(`ModRM: ${modRM}`);
 
-        if (decodeMod_32(modRM) === "mod: Register + Displacement") {
-          const displacement = u32(codeSection, instructionPointer);
+        if (decodeMod_32(modRM) === "mod: Register + Displacement Byte") {
+          const displacement = u32(codeSection, this.instructionPointer);
           console.log(`Displacement: 0x${displacement.toString(16)}`);
-          instructionPointer += 4;
+          this.instructionPointer += 1;
         }
 
         console.log(decodeModRM_32(modRM));
@@ -89,14 +113,14 @@ export class PE {
         console.log(instructionName, operand);
 
         if (operand.includes("m32")) {
-          const address = u32(codeSection, instructionPointer);
+          const address = u32(codeSection, this.instructionPointer);
           console.log(`Address: 0x${address.toString(16)}`);
-          instructionPointer += 4;
+          this.instructionPointer += 4;
         }
       }
 
       console.log(instructionString);
-      this.lastInstructionPointer = instructionPointer;
+      this.lastInstructionPointer = this.instructionPointer;
       console.log();
     }
   }

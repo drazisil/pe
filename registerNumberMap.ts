@@ -30,8 +30,8 @@ const modRMMap = new Map<number, string>([
  */
 const modMappings = new Map<number, string>([
   [0, "Register"],
-  [1, "Register + Displacement"],
-  [2, "Register + Displacement"],
+  [1, "Register + Displacement Byte"],
+  [2, "Register + Displacement Dword"],
   [3, "Register"],
 ]);
 // Set of instruction opcodes that require a ModRM byte
