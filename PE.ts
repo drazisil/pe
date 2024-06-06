@@ -5,7 +5,11 @@ import { u16 } from "./u16";
 import { OptionalHeader } from "./OptionalHeader";
 import { OptionalHeaderDataDirectories } from "./OptionalHeaderDataDirectories";
 import { SectionTable } from "./SectionTable";
-import { decodeInstruction } from "./instructionMap";
+import {
+  decodeInstruction,
+  decodeModRM_32,
+  isOpcodeWithModRM,
+} from "./instructionMap";
 import { u8 } from "./u8";
 import { ECharacteristics } from "./Characteristics";
 
@@ -68,6 +72,14 @@ export class PE {
         break;
       }
 
+      if (isOpcodeWithModRM(instruction)) {
+        const modRM = u8(codeSection, instructionPointer);
+        instructionPointer++;
+        console.log(`ModRM: ${modRM}`);
+
+        console.log(decodeModRM_32(modRM));
+      }
+
       if (instructionString.includes(",")) {
         const [instructionName, operand] = instructionString.split(",");
         console.log(instructionName, operand);
@@ -78,8 +90,6 @@ export class PE {
           instructionPointer += 4;
         }
       }
-
-      console.log(decodeInstruction(instruction));
     }
   }
 
