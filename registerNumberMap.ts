@@ -35,7 +35,7 @@ const modMappings = new Map<number, string>([
   [3, "Register"],
 ]);
 // Set of instruction opcodes that require a ModRM byte
-const opcodesWithModRM = new Set<number>([139]);
+const opcodesWithModRM = new Set<number>([0x8b]);
 /**
  * Checks if the given word is an opcode with ModRM.
  * @param word - The opcode word to check.
