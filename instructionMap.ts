@@ -3,7 +3,8 @@ import { toHex } from "./toHex";
 // Map of instruction opcodes to their string representations
 const instructionMap = new Map<number, string>([]);
 instructionMap.set(0x55, "PUSH eBP");
-instructionMap.set(0x8b, "MOV r32, r/m32 Ev");
+instructionMap.set(0x78, "JS rel8");
+instructionMap.set(0x8b, "MOV r32, r/m32");
 instructionMap.set(0x90, "NOP");
 instructionMap.set(0xa1, "MOV eAX, m32");
 instructionMap.set(0xc3, "RETN");

@@ -6,7 +6,7 @@ import { OptionalHeader } from "./OptionalHeader";
 import { OptionalHeaderDataDirectories } from "./OptionalHeaderDataDirectories";
 import { SectionTable } from "./SectionTable";
 import { decodeInstruction } from "./instructionMap";
-import { decodeModRM_32, isOpcodeWithModRM } from "./registerNumberMap";
+import { decodeModRM_32, decodeMod_32, isOpcodeWithModRM } from "./registerNumberMap";
 import { u8 } from "./u8";
 import { ECharacteristics } from "./Characteristics";
 
@@ -74,7 +74,14 @@ export class PE {
         instructionPointer++;
         console.log(`ModRM: ${modRM}`);
 
+        if (decodeMod_32(modRM) === "mod: Register + Displacement") {
+          const displacement = u32(codeSection, instructionPointer);
+          console.log(`Displacement: 0x${displacement.toString(16)}`);
+          instructionPointer += 4;
+        }
+
         console.log(decodeModRM_32(modRM));
+        continue
       }
 
       if (instructionString.includes(",")) {
@@ -87,6 +94,10 @@ export class PE {
           instructionPointer += 4;
         }
       }
+
+      console.log(instructionString);
+      this.lastInstructionPointer = instructionPointer;
+      console.log();
     }
   }
 

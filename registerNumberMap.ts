@@ -50,7 +50,7 @@ export function isOpcodeWithModRM(word: number): boolean {
  * @param mod - The mod value to decode.
  * @returns A string representation of the mod value.
  */
-function decodeMod_32(mod: number): string {
+export function decodeMod_32(mod: number): string {
   return `mod: ${modMappings.get(mod)}`;
 }
 /**
@@ -58,7 +58,7 @@ function decodeMod_32(mod: number): string {
  * @param reg - The register number to decode.
  * @returns A string representation of the register.
  */
-function decodeReg_32(reg: number): string {
+export function decodeReg_32(reg: number): string {
   return `reg: ${registerNumberMap.get(reg)}`;
 }
 /**
@@ -67,7 +67,7 @@ function decodeReg_32(reg: number): string {
  * @param rm - The RM_32 value to decode.
  * @returns A string representation of the decoded RM_32 value.
  */
-function decodeRM_32(rm: number): string {
+export function decodeRM_32(rm: number): string {
   return `rm: ${modRMMap.get(rm)}`;
 }
 /**
