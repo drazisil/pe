@@ -37,6 +37,12 @@ enum SectionCharacteristicFlags {
   IMAGE_SCN_MEM_READ = 1073741824,
   IMAGE_SCN_MEM_WRITE = 2147483648,
 }
+/**
+ * Parses the section characteristics flags and returns a string representation of the characteristics.
+ * 
+ * @param flags - The section characteristics flags to parse.
+ * @returns A string representation of the section characteristics.
+ */
 function parseSectionCharacteristics(flags: number) {
   const characteristics: string[] = [];
   for (const flag in SectionCharacteristicFlags) {
