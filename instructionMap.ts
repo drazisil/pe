@@ -1,4 +1,4 @@
-import { toHex } from "./toHex";
+import { toHex } from "./src/toHex";
 
 // Map of instruction opcodes to their string representations
 const instructionMap = new Map<number, string>([]);

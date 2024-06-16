@@ -1,4 +1,4 @@
-import { u32 } from "./u32";
+import { u32 } from "./src/dataTypes";
 
 class DataDirectory {
   constructor(data: Uint8Array, offset: number) {

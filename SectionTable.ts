@@ -1,6 +1,4 @@
-import { u32 } from "./u32";
-import { char } from "./char";
-import { u16 } from "./u16";
+import { char, u16, u32 } from "./src/dataTypes";
 
 enum SectionCharacteristicFlags {
   IMAGE_SCN_TYPE_NO_PAD = 8,

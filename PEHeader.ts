@@ -1,9 +1,7 @@
-import { u16 } from "./u16";
-import { u32 } from "./u32";
-import { time_t } from "./time_t";
+import { char, u16, u32 } from "./src/dataTypes";
+import { time_t } from "./src/time_t";
 import { machine } from "./machine";
 import { Characteristics } from "./Characteristics";
-import { char } from "./char";
 
 export class PEHeader {
   constructor(data: Uint8Array, offset: number) {

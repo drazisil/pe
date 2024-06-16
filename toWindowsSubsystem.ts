@@ -1,4 +1,4 @@
-import { toHex } from "./toHex";
+import { toHex } from "./src/toHex";
 
 enum WindowsSubsystem {
   UNKNOWN = 0,

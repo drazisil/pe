@@ -1,5 +1,4 @@
-import { u32 } from "./u32";
-import { u16 } from "./u16";
+import { u16, u32 } from "./src/dataTypes";
 
 export class OptionalHeader {
   constructor(data: Uint8Array, offset: number) {
@@ -77,8 +76,6 @@ export class OptionalHeader {
   get size() {
     return this.magic === 0x10b ? 96 : 112;
   }
-
-
 
   toString() {
     return `Optional Header:

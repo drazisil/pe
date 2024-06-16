@@ -1,13 +1,15 @@
 import { open } from "node:fs/promises";
-import { u32 } from "./u32";
 import { PEHeader } from "./PEHeader";
-import { u16 } from "./u16";
+import { u16, u32 } from "./src/dataTypes";
 import { OptionalHeader } from "./OptionalHeader";
 import { OptionalHeaderDataDirectories } from "./OptionalHeaderDataDirectories";
 import { SectionTable } from "./SectionTable";
 import { decodeInstruction } from "./instructionMap";
-import { decodeModRM_32, decodeMod_32, isOpcodeWithModRM } from "./registerNumberMap";
-import { u8 } from "./u8";
+import {
+  decodeModRM_32,
+  decodeMod_32,
+  isOpcodeWithModRM,
+} from "./registerNumberMap";
 import { ECharacteristics } from "./Characteristics";
 
 export class PE {
@@ -18,7 +20,7 @@ export class PE {
   private readonly sections: { [key: string]: Uint8Array };
   private wordSize = -1;
   private instructionPointer = -1;
-  private lastInstructionPointer = 0; 
+  private lastInstructionPointer = 0;
   private instruction = -1;
   private lastInstruction = -1;
   private address = -1;
@@ -35,6 +37,97 @@ export class PE {
     this.optionalHeaderDataDirectories = optionalHeaderDataDirectories;
     this.sectionTables = sectionTables;
     this.sections = sections;
+  }
+
+  /**
+   * Gets the word size.
+   * @returns The word size.
+   */
+  getWordSize() {
+    return this.wordSize;
+  }
+
+  /**
+   * Gets the current value of the instruction pointer.
+   * @returns The value of the instruction pointer.
+   */
+  getInstructionPointer() {
+    return this.instructionPointer;
+  }
+
+  /**
+   * Gets the last instruction pointer.
+   * @returns The last instruction pointer.
+   */
+  getLastInstructionPointer() {
+    return this.lastInstructionPointer;
+  }
+
+  /**
+   * Retrieves the instruction.
+   * @returns The instruction.
+   */
+  getInstruction() {
+    return this.instruction;
+  }
+
+  /**
+   * Returns the last instruction.
+   * @returns The last instruction.
+   */
+  getLastInstruction() {
+    return this.lastInstruction;
+  }
+
+  /**
+   * Gets the address.
+   * @returns The address.
+   */
+  getAddress() {
+    return this.address;
+  }
+
+  /**
+   * Retrieves the PE header of the PE file.
+   * @returns The PE header.
+   */
+  getPEHeader() {
+    return this.peHeader;
+  }
+
+  /**
+   * Retrieves the optional header.
+   *
+   * @returns The optional header.
+   */
+  getOptionalHeader() {
+    return this.optionalHeader;
+  }
+
+  /**
+   * Retrieves the optional header data directories.
+   *
+   * @returns An array of optional header data directories.
+   */
+  getOptionalHeaderDataDirectories() {
+    return this.optionalHeaderDataDirectories;
+  }
+
+  /**
+   * Retrieves the section tables.
+   *
+   * @returns An array of section tables.
+   */
+  getSectionTables() {
+    return this.sectionTables;
+  }
+
+  /**
+   * Retrieves the sections of the PE object.
+   * @returns An array of sections.
+   */
+  getSections() {
+    return this.sections;
   }
 
   /**
@@ -73,7 +166,6 @@ export class PE {
     this.instructionPointer = 0;
 
     while (true) {
-
       this.fetchInstruction();
 
       let instruction = this.instruction;
@@ -94,7 +186,7 @@ export class PE {
       }
 
       if (isOpcodeWithModRM(this.instruction)) {
-        this.fetchInstruction()
+        this.fetchInstruction();
         const modRM = this.instruction;
         console.log(`ModRM: ${modRM}`);
 
@@ -105,7 +197,7 @@ export class PE {
         }
 
         console.log(decodeModRM_32(modRM));
-        continue
+        continue;
       }
 
       if (instructionString.includes(",")) {
