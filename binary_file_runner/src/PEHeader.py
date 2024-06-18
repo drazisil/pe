@@ -1,6 +1,6 @@
 import datetime
-from binary_file_runner.PECharacteristics import PECharacteristics
-from binary_file_runner.PEMachine import PEMachine
+from binary_file_runner.src.PECharacteristics import PECharacteristics
+from binary_file_runner.src.PEMachine import PEMachine
 
 windows_epoch = datetime.datetime(1970, 1, 1)
 
