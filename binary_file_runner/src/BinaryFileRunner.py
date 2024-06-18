@@ -1,13 +1,13 @@
 # Description: This file contains the BinaryFileRunner class which is responsible for reading a binary file and extracting the PE header, PE optional header, PE optional header data directories, PE section tables, and PE sections.
 
 
-from binary_file_runner.PEHeader import PEHeader
-from binary_file_runner.PEOptionalHeader import PEOptionalHeader
-from binary_file_runner.PEOptionalHeaderDataDirectory import (
+from binary_file_runner.src.PEHeader import PEHeader
+from binary_file_runner.src.PEOptionalHeader import PEOptionalHeader
+from binary_file_runner.src.PEOptionalHeaderDataDirectory import (
     PEOptionalHeaderDataDirectory,
 )
-from binary_file_runner.PESection import PESection
-from binary_file_runner.PESectionTable import PESectionTable
+from binary_file_runner.src.PESection import PESection
+from binary_file_runner.src.PESectionTable import PESectionTable
 
 
 class BinaryFileRunner:

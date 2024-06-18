@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-from binary_file_runner.BinaryFileRunner import BinaryFileRunner
+from binary_file_runner.src.BinaryFileRunner import BinaryFileRunner
 
 
 path = "/home/drazisil/Downloads/MCO/mcity.exe"
