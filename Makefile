@@ -13,4 +13,4 @@ test:
 	pipenv run coverage report -m --skip-covered
 	pipenv run coverage xml
 
-.PHONY: init test
+.PHONY: init lint test
