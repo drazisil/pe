@@ -13,7 +13,12 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: '3.10'
+        python-version: '3.12'
+    - name: Run pipenv-setup
+      # You may pin to the exact commit or the version.
+      # uses: wangsha/action-pipenv-setup@76e9e5877bdb2feb1eaf7754b3ad60bb663baf37
+      uses: wangsha/action-pipenv-setup@3.2.0
+          
     - name: Install dependencies
       run: |
         pipenv install --dev
