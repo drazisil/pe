@@ -1,0 +1,13 @@
+coverage 
+flake8 
+iniconfig 
+mccabe 
+packaging 
+pluggy 
+pycodestyle 
+pyflakes 
+pytest 
+pytest-cov 
+setuptools==69.5.1
+toml 
+wheel==0.43.0
