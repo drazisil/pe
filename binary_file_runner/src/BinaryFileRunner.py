@@ -1,6 +1,7 @@
 # Description: This file contains the BinaryFileRunner class which is responsible for reading a binary file and extracting the PE header, PE optional header, PE optional header data directories, PE section tables, and PE sections.
 
 
+from codecs import encode
 from binary_file_runner.src.PEHeader import PEHeader
 from binary_file_runner.src.PEOptionalHeader import PEOptionalHeader
 from binary_file_runner.src.PEOptionalHeaderDataDirectory import (
@@ -8,6 +9,320 @@ from binary_file_runner.src.PEOptionalHeaderDataDirectory import (
 )
 from binary_file_runner.src.PESection import PESection
 from binary_file_runner.src.PESectionTable import PESectionTable
+
+from tkinter import ttk, Tk
+
+
+class CodePage_437:
+    def __init__(self):
+        self.__code_page = [
+            " ",
+            "☺",
+            "☻",
+            "♥",
+            "♦",
+            "♣",
+            "♠",
+            "•",
+            "◘",
+            "○",
+            "◙",
+            "♂",
+            "♀",
+            "♪",
+            "♫",
+            "☼",
+            "►",
+            "◄",
+            "↕",
+            "‼",
+            "¶",
+            "§",
+            "▬",
+            "↨",
+            "↑",
+            "↓",
+            "→",
+            "←",
+            "∟",
+            "↔",
+            "▲",
+            "▼",
+            " ",
+            "!",
+            '"',
+            "#",
+            "$",
+            "%",
+            "&",
+            "'",
+            "(",
+            ")",
+            "*",
+            "+",
+            ",",
+            "-",
+            ".",
+            "/",
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            ":",
+            ";",
+            "<",
+            "=",
+            ">",
+            "?",
+            "@",
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z",
+            "[",
+            "\\",
+            "]",
+            "^",
+            "_",
+            "`",
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j",
+            "k",
+            "l",
+            "m",
+            "n",
+            "o",
+            "p",
+            "q",
+            "r",
+            "s",
+            "t",
+            "u",
+            "v",
+            "w",
+            "x",
+            "y",
+            "z",
+            "{",
+            "|",
+            "}",
+            "~",
+            "⌂",
+            "Ç",
+            "ü",
+            "é",
+            "â",
+            "ä",
+            "à",
+            "å",
+            "ç",
+            "ê",
+            "ë",
+            "è",
+            "ï",
+            "î",
+            "ì",
+            "Ä",
+            "Å",
+            "É",
+            "æ",
+            "Æ",
+            "ô",
+            "ö",
+            "ò",
+            "û",
+            "ù",
+            "ÿ",
+            "Ö",
+            "Ü",
+            "¢",
+            "£",
+            "¥",
+            "₧",
+            "ƒ",
+            "á",
+            "í",
+            "ó",
+            "ú",
+            "ñ",
+            "Ñ",
+            "ª",
+            "º",
+            "¿",
+            "⌐",
+            "¬",
+            "½",
+            "¼",
+            "¡",
+            "«",
+            "»",
+            "░",
+            "▒",
+            "▓",
+            "│",
+            "┤",
+            "╡",
+            "╢",
+            "╖",
+            "╕",
+            "╣",
+            "║",
+            "╗",
+            "╝",
+            "╜",
+            "╛",
+            "┐",
+            "└",
+            "┴",
+            "┬",
+            "├",
+            "─",
+            "┼",
+            "╞",
+            "╟",
+            "╚",
+            "╔",
+            "╩",
+            "╦",
+            "╠",
+            "═",
+            "╬",
+            "╧",
+            "╨",
+            "╤",
+            "╥",
+            "╙",
+            "╘",
+            "╒",
+            "╓",
+            "╫",
+            "╪",
+            "┘",
+            "┌",
+            "█",
+            "▄",
+            "▌",
+            "▐",
+            "▀",
+            "α",
+            "ß",
+            "Γ",
+            "π",
+            "Σ",
+            "σ",
+            "µ",
+            "τ",
+            "Φ",
+            "Θ",
+            "Ω",
+            "δ",
+            "∞",
+            "φ",
+            "ε",
+            "∩",
+            "≡",
+            "±",
+            "≥",
+            "≤",
+            "⌠",
+            "⌡",
+            "÷",
+            "≈",
+            "°",
+            "∙",
+            "·",
+            "√",
+            "ⁿ",
+            "²",
+            "■",
+            " ",
+        ]
+
+    def get_char(self, i):
+        print("Getting char for i={}".format(i))
+        return self.__code_page[i] if i < len(self.__code_page) else "0"
+
+    def __sizeof__(self) -> int:
+        return len(self.__code_page)
+
+
+class Screen:
+    def __init__(self, numColumns, numRows):
+        self.numColumns = numColumns
+        self.numRows = numRows
+        self.frame_buffer = [[" "] * numColumns for _ in range(numRows)]
+
+        self.code_page = CodePage_437()
+
+        for y in range(numRows):
+            for x in range(numColumns):
+                pos = self.get_position(x, y)
+                char = self.code_page.get_char(pos)
+                self.frame_buffer[y][x] = char
+
+    def get_position(self, columnIndex, rowIndex):
+        print("Getting position for column={} and row={}".format(columnIndex, rowIndex))
+        return columnIndex + rowIndex * self.numColumns
+
+    def set_char(self, x, y, char):
+        self.frame_buffer[y * self.numColumns + x] = char
+
+    def clear(self):
+        self.frame_buffer = [0] * (self.numColumns * self.numRows)
+        self.frame_buffer = [[" "] * self.numColumns for _ in range(self.numRows)]
+
+    def draw(self):
+        print(
+            "Drawing screen with width={} and height={}".format(
+                self.numColumns, self.numRows
+            )
+        )
+        for y in range(self.numRows):
+            for x in range(self.numColumns):
+                print(self.frame_buffer[y][x], end="")
+            print()
+
+    def __str__(self):
+        return "Screen(width={}, height={})".format(self.numColumns, self.numRows)
+
+    def __repr__(self):
+        return "Screen(width={}, height={})".format(self.numColumns, self.numRows)
 
 
 class BinaryFileRunner:
@@ -24,6 +339,13 @@ class BinaryFileRunner:
         self.pe_optional_header_data_directories = pe_optional_header_data_directories
         self.pe_section_tables = pe_section_tables
         self.pe_sections = pe_sections
+        self.screen = Screen(80, 25)
+        
+        self.root = Tk()
+        frm = ttk.Frame(self.root, padding=10)
+        frm.grid()
+        ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
+        ttk.Button(frm, text="Quit", command=self.root.destroy).grid(column=1, row=0)
 
     @staticmethod
     def from_path(path):
@@ -64,7 +386,8 @@ class BinaryFileRunner:
             )
 
     def run(self):
-        pass
+        self.screen.draw()
+        self.root.mainloop()
 
     def __str__(self):
         pretty = "PEHeader: {}\nPEOptionalHeader: {}\n".format(
