@@ -4,8 +4,10 @@ from binary_file_runner.src.PEMachine import PEMachine
 
 windows_epoch = datetime.datetime(1970, 1, 1)
 
+
 def file_time_to_datetime(file_time):
     return windows_epoch + datetime.timedelta(seconds=file_time)
+
 
 class PEHeader:
     def __init__(
@@ -37,7 +39,9 @@ class PEHeader:
         pointerToSymbolTable = int.from_bytes(data[12:16], byteorder="little")
         numberOfSymbols = int.from_bytes(data[16:20], byteorder="little")
         sizeOfOptionalHeader = int.from_bytes(data[20:22], byteorder="little")
-        characteristics = PECharacteristics(int.from_bytes(data[22:24], byteorder="little"))
+        characteristics = PECharacteristics(
+            int.from_bytes(data[22:24], byteorder="little")
+        )
 
         return PEHeader(
             signature,
@@ -74,4 +78,3 @@ class PEHeader:
             self.sizeOfOptionalHeader,
             self.characteristics,
         )
-            

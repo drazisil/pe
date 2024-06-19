@@ -10,6 +10,8 @@ pytest-cov = "*"
 pytest = "*"
 flake8 = "*"
 coverage = "*"
+flake8-black = "*"
+black = "*"
 
 [requires]
 python_version = "3.12.4"

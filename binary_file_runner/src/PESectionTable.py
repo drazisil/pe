@@ -21,7 +21,11 @@ class PESectionTable:
 
     def __str__(self):
         pretty = "name: {}\n  virtual_size: {}\n  virtual_address: {}\n  size_of_raw_data: {}\n  pointer_to_raw_data: {}\n".format(
-            self.name, self.virtual_size, self.virtual_address, self.size_of_raw_data, self.pointer_to_raw_data
+            self.name,
+            self.virtual_size,
+            self.virtual_address,
+            self.size_of_raw_data,
+            self.pointer_to_raw_data,
         )
         return pretty + "\n"
 
