@@ -10,7 +10,7 @@ from binary_file_runner.src.PEOptionalHeaderDataDirectory import (
 from binary_file_runner.src.PESection import PESection
 from binary_file_runner.src.PESectionTable import PESectionTable
 
-from tkinter import ttk, Tk
+import tkinter as tk
 
 
 class CodePage_437:
@@ -325,7 +325,7 @@ class Screen:
         return "Screen(width={}, height={})".format(self.numColumns, self.numRows)
 
 
-class BinaryFileRunner:
+class BinaryFileRunner(tk.Frame):
     def __init__(
         self,
         pe_header,
@@ -333,6 +333,7 @@ class BinaryFileRunner:
         pe_optional_header_data_directories,
         pe_section_tables,
         pe_sections,
+        master=None,
     ):
         self.pe_header = pe_header
         self.pe_optional_header = pe_optional_header
@@ -341,11 +342,10 @@ class BinaryFileRunner:
         self.pe_sections = pe_sections
         self.screen = Screen(80, 25)
         
-        self.root = Tk()
-        frm = ttk.Frame(self.root, padding=10)
-        frm.grid()
-        ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
-        ttk.Button(frm, text="Quit", command=self.root.destroy).grid(column=1, row=0)
+        tk.Frame.__init__(self, master)
+        self.grid()
+        tk.Label(self, text="Hello World!").grid(column=0, row=0)
+        tk.Button(self, text="Quit", command=self.quit).grid(column=1, row=0)
 
     @staticmethod
     def from_path(path):
@@ -387,7 +387,7 @@ class BinaryFileRunner:
 
     def run(self):
         self.screen.draw()
-        self.root.mainloop()
+        self.mainloop()
 
     def __str__(self):
         pretty = "PEHeader: {}\nPEOptionalHeader: {}\n".format(
