@@ -1,13 +1,6 @@
 class PEMachine:
     def __init__(self, value):
-        self.value = value
-
-    @staticmethod
-    def from_bytes(data):
-        return PEMachine(int.from_bytes(data, byteorder="little"))
-
-    def __str__(self):
-        return {
+        self.value = {
             0x0: "IMAGE_FILE_MACHINE_UNKNOWN",
             0x1D3: "IMAGE_FILE_MACHINE_AM33",
             0x8664: "IMAGE_FILE_MACHINE_AMD64",
@@ -30,7 +23,14 @@ class PEMachine:
             0x1A8: "IMAGE_FILE_MACHINE_SH5",
             0x1C2: "IMAGE_FILE_MACHINE_THUMB",
             0x169: "IMAGE_FILE_MACHINE_WCEMIPSV2",
-        }[self.value]
+        }[value]
+
+    @staticmethod
+    def from_bytes(data):
+        return PEMachine(int.from_bytes(data, byteorder="little"))
+
+    def __str__(self):
+        return self.value
 
     def __repr__(self):
         return "PEMachine(value={})".format(self.value)

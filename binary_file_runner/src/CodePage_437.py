@@ -260,7 +260,6 @@ class CodePage_437:
         ]
 
     def get_char(self, i):
-        print("Getting char for i={}".format(i))
         return self.__code_page[i] if i < len(self.__code_page) else "0"
 
     def __sizeof__(self) -> int:

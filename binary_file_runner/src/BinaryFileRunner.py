@@ -1,7 +1,3 @@
-# Description: This file contains the BinaryFileRunner class which is responsible for reading a binary file and extracting the PE header, PE optional header, PE optional header data directories, PE section tables, and PE sections.
-
-
-from codecs import encode
 from binary_file_runner.src.PEHeader import PEHeader
 from binary_file_runner.src.PEOptionalHeader import PEOptionalHeader
 from binary_file_runner.src.PEOptionalHeaderDataDirectory import (
@@ -18,11 +14,11 @@ from binary_file_runner.src.Screen import Screen
 class BinaryFileRunner(tk.Frame):
     def __init__(
         self,
-        pe_header,
-        pe_optional_header,
-        pe_optional_header_data_directories,
-        pe_section_tables,
-        pe_sections,
+        pe_header: PEHeader,
+        pe_optional_header: PEOptionalHeader,
+        pe_optional_header_data_directories: list[PEOptionalHeaderDataDirectory],
+        pe_section_tables: list[PESectionTable],
+        pe_sections: list[PESection],
         master=None,
     ):
         self.pe_header = pe_header
@@ -79,25 +75,32 @@ class BinaryFileRunner(tk.Frame):
         self.mainloop()
 
     def __str__(self):
-        pretty = "PEHeader: {}\nPEOptionalHeader: {}\n".format(
-            self.pe_header, self.pe_optional_header
-        )
+        pretty = "PEHeader: \n"
+        pretty += f"{self.pe_header}\n"
+        pretty += "PEOptionalHeader: \n"
+        pretty += f"{self.pe_optional_header}\n"
         pretty += "PEOptionalHeaderDataDirectories: \n"
         for directory in self.pe_optional_header_data_directories:
-            pretty += "  {}".format(directory)
+            pretty += f"{directory}"
         pretty += "PESectionTables: \n"
         for table in self.pe_section_tables:
-            pretty += "  {}".format(table)
+            pretty += f"{table}"
         pretty += "PESections: \n"
         for section in self.pe_sections:
-            pretty += "  {}".format(section)
-        return pretty + "\n"
+            pretty += f"{section}"
+        return pretty + "\n".replace("\t", "  ")
+    
+    def __format__(self, format_spec: str) -> str:
+        return self.__str__()
 
     def __repr__(self):
-        return "BinaryFileRunner(pe_header={}, pe_optional_header={}, pe_optional_header_data_directories={}, pe_section_tables={}, pe_sections={})".format(
-            self.pe_header,
-            self.pe_optional_header,
-            self.pe_optional_header_data_directories,
-            self.pe_section_tables,
-            self.pe_sections,
+        value = (
+            "pe_header={}".format(self.pe_header),
+            "pe_optional_header={}".format(self.pe_optional_header),
+            "pe_optional_header_data_directories={}".format(
+                self.pe_optional_header_data_directories
+            ),
+            "pe_section_tables={}".format(self.pe_section_tables),
+            "pe_sections={}".format(self.pe_sections),
         )
+        return "BinaryFileRunner({})".format(", ".join(value))

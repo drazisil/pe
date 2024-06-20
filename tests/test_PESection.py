@@ -1,6 +1,6 @@
 import unittest
 
-from .context import PESection
+from . import PESection
 
 
 class TestPESection(unittest.TestCase):

@@ -16,7 +16,6 @@ class Screen:
                 self.frame_buffer[y][x] = char
 
     def get_position(self, columnIndex, rowIndex):
-        print("Getting position for column={} and row={}".format(columnIndex, rowIndex))
         return columnIndex + rowIndex * self.numColumns
 
     def set_char(self, x, y, char):

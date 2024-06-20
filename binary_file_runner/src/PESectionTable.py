@@ -20,20 +20,21 @@ class PESectionTable:
         )
 
     def __str__(self):
-        pretty = "name: {}\n  virtual_size: {}\n  virtual_address: {}\n  size_of_raw_data: {}\n  pointer_to_raw_data: {}\n".format(
-            self.name,
-            self.virtual_size,
-            self.virtual_address,
-            self.size_of_raw_data,
-            self.pointer_to_raw_data,
+        pretty = (
+            "name: {}\n  ".format(self.name),
+            "virtual_size: {}\n  ".format(self.virtual_size),
+            "virtual_address: {}\n  ".format(self.virtual_address),
+            "size_of_raw_data: {}\n  ".format(self.size_of_raw_data),
+            "pointer_to_raw_data: {}\n".format(self.pointer_to_raw_data),
         )
-        return pretty + "\n"
+        return "".join(pretty) + "\n"
 
     def __repr__(self):
-        return "PESectionTable(name={}, virtual_size={}, virtual_address={}, size_of_raw_data={}, pointer_to_raw_data={})".format(
-            self.name,
-            self.virtual_size,
-            self.virtual_address,
-            self.size_of_raw_data,
-            self.pointer_to_raw_data,
+        value = (
+            "name={}".format(self.name),
+            "virtual_size={}".format(self.virtual_size),
+            "virtual_address={}".format(self.virtual_address),
+            "size_of_raw_data={}".format(self.size_of_raw_data),
+            "pointer_to_raw_data={}".format(self.pointer_to_raw_data),
         )
+        return "PESectionTable({})".format(", ".join(value))

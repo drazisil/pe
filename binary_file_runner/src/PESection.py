@@ -8,8 +8,9 @@ class PESection:
         return PESection(name, data[:size])
 
     def __str__(self):
-        pretty = "name: {}\n  data length: {}\n".format(self.name, len(self.data))
-        return pretty + "\n"
+        pretty = f"\tname: {self.name}\n"
+        pretty += f"\tdata length: {len(self.data)}\n"
+        return pretty.replace("\t", "  ")
 
     def __repr__(self):
         return "PESection(name={}, data length={})".format(self.name, len(self.data))

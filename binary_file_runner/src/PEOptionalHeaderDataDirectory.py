@@ -10,11 +10,10 @@ class PEOptionalHeaderDataDirectory:
         return PEOptionalHeaderDataDirectory(virtual_address, size)
 
     def __str__(self):
-        pretty = "virtual_address: {}\n  size: {}\n".format(
-            self.virtual_address, self.size
-        )
+        pretty = f"\tvirtual_address: {self.virtual_address}\n"
+        pretty += f"\tsize: {self.size}\n"
 
-        return pretty
+        return pretty.replace("\t", "  ")
 
     def __repr__(self):
         return "PEOptionalHeaderDataDirectory(virtual_address={}, size={})".format(
