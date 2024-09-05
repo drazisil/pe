@@ -8,6 +8,6 @@ pycodestyle
 pyflakes 
 pytest 
 pytest-cov 
-setuptools==70.3.0
+setuptools==74.1.2
 toml 
 wheel==0.43.0
