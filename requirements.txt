@@ -10,4 +10,4 @@ pytest
 pytest-cov 
 setuptools==75.3.0
 toml 
-wheel==0.43.0
+wheel==0.45.0
